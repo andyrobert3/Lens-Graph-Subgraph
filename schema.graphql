@@ -236,6 +236,19 @@ type FollowOnlyReferenceModuleSettings @entity {
 	contractAddress: String!
 }
 
+# Follow NFT
+type FollowNft @entity(immutable: false) {
+	id: ID!
+	profile: Profile
+}
+
+type CollectNft @entity(immutable: false) {
+	id: ID!
+	"Rename 'post' -> 'publication'"
+	pubId: Post!
+	profile: Profile
+}
+
 # https://docs.lens.xyz/docs/events#profilecreated
 type Profile @entity {
 	id: ID!
@@ -253,10 +266,15 @@ type Profile @entity {
 
 	followNftUri: String
 
+	# @derivedFrom virtual field
+	"https://thegraph.com/docs/en/developing/creating-a-subgraph/"
+	followNfts: [FollowNft!]! @derivedFrom(field: "profile")
+	collectNfts: [CollectNft!]! @derivedFrom(field: "profile")
+
 	# TODO: Combine to single superclass "Publication"
-	posts: [Post!]!
-	comments: [Comment!]!
-	mirrors: [Mirror!]!
+	posts: [Post!]! @derivedFrom(field: "profile")
+	comments: [Comment!]! @derivedFrom(field: "profile")
+	mirrors: [Mirror!]! @derivedFrom(field: "profile")
 
 	# Additional fields that we want to remove
 	# TODO: Refactor & remove
@@ -264,8 +282,8 @@ type Profile @entity {
 	bio: String
 	followNftAddress: String
 	metadata: String
-	handle: String!
-	picture: ProfileMedia
+	# handle: String!
+	# picture: ProfileMedia
 	coverPicture: ProfileMedia
 	ownedBy: String!
 	dispatcher: Dispatcher
@@ -323,7 +341,7 @@ type Post @entity {
 	# Address of user who collected
 	collectedBy: String
 
-	mirrors: [ID!]
+	mirrors: [Mirror!] @derivedFrom(field: "publicationPointed")
 
 	# Additional fields that we want to remove
 	# TODO: Refactor & remove
