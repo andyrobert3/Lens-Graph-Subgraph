@@ -3,7 +3,9 @@ import {
 	Approval as ApprovalEvent,
 	ApprovalForAll as ApprovalForAllEvent,
 	Collected,
+	CollectNFTTransferred,
 	CommentCreated,
+	FollowNFTTransferred,
 	MirrorCreated,
 	PostCreated,
 	ProfileCreated,
@@ -12,7 +14,9 @@ import {
 import {
 	Approval,
 	ApprovalForAll,
+	CollectNft,
 	Comment,
+	FollowNft,
 	Mirror,
 	Post,
 	Profile,
@@ -104,11 +108,12 @@ export function handlePostCreated(event: PostCreated): void {
 		post.save();
 	}
 
-	let profile = Profile.load(event.params.profileId.toString());
-	if (profile) {
-		profile.posts = (profile.posts ?? []).concat([post.id]);
-		profile.save();
-	}
+	// No longer needed with virtual fields
+	// let profile = Profile.load(event.params.profileId.toString());
+	// if (profile) {
+	// 	profile.posts = (profile.posts ?? []).concat([post.id]);
+	// 	profile.save();
+	// }
 }
 
 export function handleCommentCreated(event: CommentCreated): void {
@@ -127,11 +132,12 @@ export function handleCommentCreated(event: CommentCreated): void {
 		comment.save();
 	}
 
-	let profile = Profile.load(event.params.profileId.toString());
-	if (profile) {
-		profile.comments = (profile.comments ?? []).concat([comment.id]);
-		profile.save();
-	}
+	// No longer needed with virtual fields
+	// let profile = Profile.load(event.params.profileId.toString());
+	// if (profile) {
+	// 	profile.comments = (profile.comments ?? []).concat([comment.id]);
+	// 	profile.save();
+	// }
 }
 
 export function handleMirrorCreated(event: MirrorCreated): void {
@@ -149,11 +155,11 @@ export function handleMirrorCreated(event: MirrorCreated): void {
 		mirror.save();
 	}
 
-	// Add publication mirrors
-	let post = Post.load(event.params.pubIdPointed.toString());
-	if (post) {
-		post.mirrors = (post.mirrors ?? []).concat([event.params.pubId.toString()]);
-	}
+	// No longer needed with virtual fields
+	// let post = Post.load(event.params.pubIdPointed.toString());
+	// if (post) {
+	// 	post.mirrors = (post.mirrors ?? []).concat([event.params.pubId.toString()]);
+	// }
 
 	let comment = Comment.load(event.params.pubIdPointed.toString());
 	if (comment) {
@@ -183,4 +189,34 @@ export function handleCollected(event: Collected): void {
 		mirror.collectedBy = event.params.collector.toHexString();
 		mirror.save();
 	}
+}
+
+export function handleFollowNftTransferred(event: FollowNFTTransferred): void {
+	// Handle adding the new "followNFT" to the intended profile
+	let followNft = FollowNft.load(event.params.followNFTId.toString());
+	if (!followNft) {
+		followNft = new FollowNft(event.params.followNFTId.toString());
+	}
+
+	// TODO: How to load "Profile" based on the "to" address, since the Event only gives us the "to" address?
+	followNft.unset("profile");
+	// followNft.profile = Profile.load(event.params.to.toHexString());
+
+	followNft.save();
+}
+
+export function handleCollectNftTransferred(
+	event: CollectNFTTransferred
+): void {
+	let collectNft = CollectNft.load(event.params.collectNFTId.toString());
+	if (!collectNft) {
+		collectNft = new CollectNft(event.params.collectNFTId.toString());
+		collectNft.pubId = event.params.pubId.toString();
+	}
+
+	// TODO: How to load "Profile" based on the "to" address, since the Event only gives us the "to" address?
+	collectNft.unset("profile");
+	// collectNft.profile = Profile.load(event.params.to.toHexString());
+
+	collectNft.save();
 }

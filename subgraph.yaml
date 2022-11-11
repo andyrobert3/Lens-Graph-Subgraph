@@ -14,19 +14,16 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - AdminChanged
-        - BeaconUpgraded
-        - Upgraded
+        - Profile
+        - Post
+        - Comment
+        - Mirror
+        - FollowNft
+        - CollectNft
       abis:
         - name: LensHub
           file: ./abis/LensHub.json
       eventHandlers:
-        # - event: AdminChanged(address,address)
-        #   handler: handleAdminChanged
-        # - event: BeaconUpgraded(indexed address)
-        #   handler: handleBeaconUpgraded
-        # - event: Upgraded(indexed address)
-        #   handler: handleUpgraded
         - event: ProfileCreated(indexed uint256,indexed address,indexed address,string,string,address,bytes,string,uint256)
           handler: handleProfileCreated
         - event: PostCreated(indexed uint256,indexed uint256,string,address,bytes,address,bytes,uint256)
@@ -37,4 +34,8 @@ dataSources:
           handler: handleMirrorCreated
         - event: Collected(indexed address,indexed uint256,indexed uint256,uint256,uint256,uint256)
           handler: handleCollected
+        - event: FollowNFTTransferred(indexed uint256,indexed uint256,address,address,uint256)
+          handler: handleFollowNftTransferred
+        - event: CollectNFTTransferred(indexed uint256,indexed uint256,indexed uint256,address,address,uint256)
+          handler: handleCollectNftTransferred
       file: ./src/lens-hub.ts

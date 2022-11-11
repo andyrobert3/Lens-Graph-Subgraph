@@ -1932,6 +1932,113 @@ export class FollowOnlyReferenceModuleSettings extends Entity {
   }
 }
 
+export class FollowNft extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save FollowNft entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type FollowNft must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("FollowNft", id.toString(), this);
+    }
+  }
+
+  static load(id: string): FollowNft | null {
+    return changetype<FollowNft | null>(store.get("FollowNft", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get profile(): string | null {
+    let value = this.get("profile");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set profile(value: string | null) {
+    if (!value) {
+      this.unset("profile");
+    } else {
+      this.set("profile", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class CollectNft extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save CollectNft entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type CollectNft must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("CollectNft", id.toString(), this);
+    }
+  }
+
+  static load(id: string): CollectNft | null {
+    return changetype<CollectNft | null>(store.get("CollectNft", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get pubId(): string {
+    let value = this.get("pubId");
+    return value!.toString();
+  }
+
+  set pubId(value: string) {
+    this.set("pubId", Value.fromString(value));
+  }
+
+  get profile(): string | null {
+    let value = this.get("profile");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set profile(value: string | null) {
+    if (!value) {
+      this.unset("profile");
+    } else {
+      this.set("profile", Value.fromString(<string>value));
+    }
+  }
+}
+
 export class Profile extends Entity {
   constructor(id: string) {
     super();
@@ -2067,6 +2174,24 @@ export class Profile extends Entity {
     }
   }
 
+  get followNfts(): Array<string> {
+    let value = this.get("followNfts");
+    return value!.toStringArray();
+  }
+
+  set followNfts(value: Array<string>) {
+    this.set("followNfts", Value.fromStringArray(value));
+  }
+
+  get collectNfts(): Array<string> {
+    let value = this.get("collectNfts");
+    return value!.toStringArray();
+  }
+
+  set collectNfts(value: Array<string>) {
+    this.set("collectNfts", Value.fromStringArray(value));
+  }
+
   get posts(): Array<string> {
     let value = this.get("posts");
     return value!.toStringArray();
@@ -2159,32 +2284,6 @@ export class Profile extends Entity {
       this.unset("metadata");
     } else {
       this.set("metadata", Value.fromString(<string>value));
-    }
-  }
-
-  get handle(): string {
-    let value = this.get("handle");
-    return value!.toString();
-  }
-
-  set handle(value: string) {
-    this.set("handle", Value.fromString(value));
-  }
-
-  get picture(): string | null {
-    let value = this.get("picture");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set picture(value: string | null) {
-    if (!value) {
-      this.unset("picture");
-    } else {
-      this.set("picture", Value.fromString(<string>value));
     }
   }
 
