@@ -111,7 +111,7 @@ export function handlePostCreated(event: PostCreated): void {
 	// No longer needed with virtual fields
 	// let profile = Profile.load(event.params.profileId.toString());
 	// if (profile) {
-	// 	profile.posts = (profile.posts ?? []).concat([post.id]);
+	// 	profile.posts = (profile.posts || []).concat([post.id]);
 	// 	profile.save();
 	// }
 }
@@ -135,7 +135,7 @@ export function handleCommentCreated(event: CommentCreated): void {
 	// No longer needed with virtual fields
 	// let profile = Profile.load(event.params.profileId.toString());
 	// if (profile) {
-	// 	profile.comments = (profile.comments ?? []).concat([comment.id]);
+	// 	profile.comments = (profile.comments || []).concat([comment.id]);
 	// 	profile.save();
 	// }
 }
@@ -163,7 +163,7 @@ export function handleMirrorCreated(event: MirrorCreated): void {
 
 	let comment = Comment.load(event.params.pubIdPointed.toString());
 	if (comment) {
-		comment.mirrors = (comment.mirrors ?? []).concat([
+		comment.mirrors = (comment.mirrors || []).concat([
 			event.params.pubId.toString(),
 		]);
 	}

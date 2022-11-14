@@ -2347,23 +2347,6 @@ export class Profile extends Entity {
     }
   }
 
-  get followModule(): string | null {
-    let value = this.get("followModule");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set followModule(value: string | null) {
-    if (!value) {
-      this.unset("followModule");
-    } else {
-      this.set("followModule", Value.fromString(<string>value));
-    }
-  }
-
   get isDefault(): boolean {
     let value = this.get("isDefault");
     return value!.toBoolean();
@@ -2808,23 +2791,6 @@ export class Post extends Entity {
       this.unset("collectNftAddress");
     } else {
       this.set("collectNftAddress", Value.fromString(<string>value));
-    }
-  }
-
-  get collectedBy(): string | null {
-    let value = this.get("collectedBy");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set collectedBy(value: string | null) {
-    if (!value) {
-      this.unset("collectedBy");
-    } else {
-      this.set("collectedBy", Value.fromString(<string>value));
     }
   }
 

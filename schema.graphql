@@ -288,7 +288,7 @@ type Profile @entity {
 	ownedBy: String!
 	dispatcher: Dispatcher
 	stats: ProfileStats
-	followModule: FollowModule
+	# followModule: FollowModule
 	isDefault: Boolean
 	attributes: [Attribute!]
 	isFollowedByMe: Boolean
@@ -348,7 +348,7 @@ type Post @entity {
 	appId: String
 	hidden: Boolean
 	collectNftAddress: String
-	collectedBy: Wallet
+	# collectedBy: Wallet
 	reaction: ReactionTypes
 	hasCollectedByMe: Boolean
 	stats: PublicationStats
